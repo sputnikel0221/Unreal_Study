@@ -27,6 +27,13 @@ AFountain::AFountain()
 	//LightSplash À§Ä¡
 	Light->SetRelativeLocation(FVector(0.0f, 0.0f, 195.0f));
 	Splash->SetRelativeLocation(FVector(0.0f, 0.0f, 195.0f));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+		SM_BODY(TEXT("/Script/Engine.StaticMesh'/Game/InfinityBladeGrassLands/Environments/Plains/Env_Plains_Ruins/StaticMesh/SM_Plains_Castle_Fountain_01.SM_Plains_Castle_Fountain_01'"));
+
+	if (SM_BODY.Succeeded()) {
+		Body->SetStaticMesh(SM_BODY.Object);
+	}
 }
 
 // Called when the game starts or when spawned
