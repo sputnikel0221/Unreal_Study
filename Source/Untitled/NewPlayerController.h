@@ -18,4 +18,7 @@ class UNTITLED_API ANewPlayerController : public APlayerController
 public:
 	virtual void PostInitializeComponents() override;
 	virtual void OnPossess(APawn* aPawn) override;
+
+protected:
+	virtual void BeginPlay() override; // 없던 BeginPlay추가
 };

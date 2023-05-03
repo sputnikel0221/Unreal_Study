@@ -14,3 +14,11 @@ void ANewPlayerController::OnPossess(APawn* aPawn)
 	YU_LOG_FORMAT(Warning, TEXT("PLayer Controller Possess"));
 	Super::OnPossess(aPawn);
 }
+
+void ANewPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FInputModeGameOnly NewInputMode;
+	SetInputMode(NewInputMode);
+}

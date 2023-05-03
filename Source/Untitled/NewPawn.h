@@ -4,6 +4,7 @@
 
 //#include "CoreMinimal.h"
 #include "Untitled.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/Pawn.h"
 #include "NewPawn.generated.h"
 
@@ -31,5 +32,19 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void PossessedBy(AController* NewController) override;
 
+	UPROPERTY(VisibleAnyWhere, Category = Collision)
+		UCapsuleComponent* Capsule;
+	UPROPERTY(VisibleAnyWhere, Category = Visual)
+		USkeletalMeshComponent* Mesh;
+	UPROPERTY(VisibleAnyWhere, Category = Movement)
+		UFloatingPawnMovement* Movement;
+	UPROPERTY(VisibleAnyWhere, Category = Camera)
+		USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnyWhere, Category = Camera)
+		UCameraComponent* Camera;
 
+
+private:
+	void UpDown(float UDValue);
+	void RightLeft(float RLValue);
 };

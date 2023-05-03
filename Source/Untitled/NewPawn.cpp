@@ -6,8 +6,36 @@
 // Sets default values
 ANewPawn::ANewPawn()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CAPSULE"));
+	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MESH"));
+	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MOVEMENT"));
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+
+	// 계층관계
+	RootComponent = Capsule;
+	Mesh->SetupAttachment(RootComponent);
+	SpringArm->SetupAttachment(RootComponent);
+	// Movement는 부착될 수 없다
+	Camera->SetupAttachment(SpringArm); // SpringArm이라는 셀카봉에 고정
+
+	// Capsule의 크기 설정
+	Capsule->SetCapsuleHalfHeight(88.0f);
+	Capsule->SetCapsuleHalfHeight(34.0f);
+	// 작업환경이 다른 에셋의 세부항목 조절
+	Mesh->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
+	// 길이 400cm에 Y축으로 -15도 회전된 셀카봉 사용
+	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_PAWNBOARD(TEXT("/Script/Engine.SkeletalMesh'/Game/InfinityBladeWarriors/Character/CompleteCharacters/SK_CharM_Cardboard.SK_CharM_Cardboard'"));
+	if (SK_PAWNBOARD.Succeeded()) {
+		Mesh->SetSkeletalMesh(SK_PAWNBOARD.Object);
+	}
+
 
 }
 
@@ -15,7 +43,7 @@ ANewPawn::ANewPawn()
 void ANewPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -30,6 +58,8 @@ void ANewPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &ANewPawn::UpDown);
+	PlayerInputComponent->BindAxis(TEXT("RightLeft"), this, &ANewPawn::RightLeft);
 }
 
 void ANewPawn::PostInitializeComponents()
@@ -42,5 +72,17 @@ void ANewPawn::PossessedBy(AController* NewController)
 {
 	YU_LOG_FORMAT(Warning, TEXT("Pawn Possessed"));
 	Super::PossessedBy(NewController);
+}
+
+void ANewPawn::UpDown(float UDValue)
+{
+	//YU_LOG_FORMAT(Warning, TEXT("%f"), UDValue);
+	AddMovementInput(GetActorForwardVector(), UDValue);
+}
+
+void ANewPawn::RightLeft(float RLValue)
+{
+	//YU_LOG_FORMAT(Warning, TEXT("%f"), RLValue);
+	AddMovementInput(GetActorRightVector(), RLValue);
 }
 
