@@ -11,3 +11,10 @@ ANewGameMode::ANewGameMode()
 	DefaultPawnClass = ANewPawn::StaticClass();
 	PlayerControllerClass = ANewPlayerController::StaticClass();
 }
+
+void ANewGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	YU_LOG_FORMAT(Warning, TEXT("PostLogin Begin"));
+	Super::PostLogin(NewPlayer);
+	YU_LOG_FORMAT(Warning, TEXT("PostLogin End"));
+}

@@ -32,3 +32,15 @@ void ANewPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ANewPawn::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	YU_LOG_FORMAT(Warning, TEXT("Pawn"));
+}
+
+void ANewPawn::PossessedBy(AController* NewController)
+{
+	YU_LOG_FORMAT(Warning, TEXT("Pawn Possessed"));
+	Super::PossessedBy(NewController);
+}
+

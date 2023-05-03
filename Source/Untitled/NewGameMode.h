@@ -7,13 +7,12 @@
 #include "GameFramework/GameModeBase.h"
 #include "NewGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class UNTITLED_API ANewGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+	ANewGameMode();
 
-		ANewGameMode();
+public: 
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 };

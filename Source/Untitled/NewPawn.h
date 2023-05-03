@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+//#include "CoreMinimal.h"
+#include "Untitled.h"
 #include "GameFramework/Pawn.h"
 #include "NewPawn.generated.h"
 
@@ -25,5 +26,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+	virtual void PostInitializeComponents() override;
+	virtual void PossessedBy(AController* NewController) override;
+
 
 };
