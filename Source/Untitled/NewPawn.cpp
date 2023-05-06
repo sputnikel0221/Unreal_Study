@@ -24,7 +24,7 @@ ANewPawn::ANewPawn()
 
 	// Capsule의 크기 설정
 	Capsule->SetCapsuleHalfHeight(88.0f);
-	Capsule->SetCapsuleHalfHeight(34.0f);
+	Capsule->SetCapsuleRadius(34.0f);
 	// 작업환경이 다른 에셋의 세부항목 조절
 	Mesh->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 	// 길이 400cm에 Y축으로 -15도 회전된 셀카봉 사용
