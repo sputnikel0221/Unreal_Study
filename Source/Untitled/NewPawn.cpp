@@ -36,7 +36,13 @@ ANewPawn::ANewPawn()
 		Mesh->SetSkeletalMesh(SK_PAWNBOARD.Object);
 	}
 
+	Mesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);	// BP버전
 
+	// BP로부터 Animation Instance 클래스를 찾아서 가져옴
+	static ConstructorHelpers::FClassFinder<UAnimInstance> NewAnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/Book/BP_WarriorAnim.BP_WarriorAnim_C'"));
+	{
+		Mesh->SetAnimInstanceClass(NewAnimInstance.Class);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -44,13 +50,7 @@ void ANewPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Mesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-	UAnimationAsset* RunAnim = LoadObject<UAnimationAsset>(nullptr, TEXT("/Script/Engine.AnimSequence'/Game/Book/Animations/WarriorRun.WarriorRun'"));
-
-	if (RunAnim != nullptr)
-	{
-		Mesh->PlayAnimation(RunAnim, true);
-	}
+	
 	
 }
 
