@@ -39,5 +39,17 @@ private:
 	void Turn(float aValue);
 
 	FVector DirectionToMove = FVector::ZeroVector;
-	void SetControlMode(FString ControlMode);
+	
+
+protected:
+	enum class ControlMode
+	{
+		GTA,
+		DIABLO
+	};
+
+	void SetControlMode(ControlMode NewControlMode);
+	ControlMode CurrentControlMode = ControlMode::GTA; //일단 기본모드로 설정
+
+	void ViewChange();
 };
