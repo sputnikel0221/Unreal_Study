@@ -18,7 +18,7 @@ void ANewPlayerController::OnPossess(APawn* aPawn)
 void ANewPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	FInputModeGameOnly NewInputMode;
 	SetInputMode(NewInputMode);
 }

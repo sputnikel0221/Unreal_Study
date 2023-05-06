@@ -44,6 +44,14 @@ void ANewPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Mesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	UAnimationAsset* RunAnim = LoadObject<UAnimationAsset>(nullptr, TEXT("/Script/Engine.AnimSequence'/Game/Book/Animations/WarriorRun.WarriorRun'"));
+
+	if (RunAnim != nullptr)
+	{
+		Mesh->PlayAnimation(RunAnim, true);
+	}
+	
 }
 
 // Called every frame
