@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "NewCharacter.h"
@@ -12,13 +12,13 @@ ANewCharacter::ANewCharacter()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 
-	// CapsuleÀÌ RootComponent, GetÀ¸·Î °¡Á®¿Â´Ù.
+	// Capsuleì´ RootComponent, Getìœ¼ë¡œ ê°€ì ¸ì˜¨ë‹¤.
 	SpringArm->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(SpringArm);
 
-	// CapsuleÀÇ ¼¼ºÎ ¼³Á¤À» ÇÏÁö ¾Ê´Â´Ù ¿ÖÁö?
+	// Capsuleì˜ ì„¸ë¶€ ì„¤ì •ì„ í•˜ì§€ ì•ŠëŠ”ë‹¤ ì™œì§€?
 
-	// ¾Æ·¡ÀÇ ¼³Á¤µéÀº GetMesh() ¿Ü¿¡ ´Ù °°´Ù.
+	// ì•„ë˜ì˜ ì„¤ì •ë“¤ì€ GetMesh() ì™¸ì— ë‹¤ ê°™ë‹¤.
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 	SpringArm->TargetArmLength = 400.0f;
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
@@ -28,9 +28,9 @@ ANewCharacter::ANewCharacter()
 		GetMesh()->SetSkeletalMesh(SK_PAWNBOARD.Object);
 	}
 
-	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);	// BP¹öÀü
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);	// BPë²„ì „
 
-	// BP·ÎºÎÅÍ Animation Instance Å¬·¡½º¸¦ Ã£¾Æ¼­ °¡Á®¿È
+	// BPë¡œë¶€í„° Animation Instance í´ë˜ìŠ¤ë¥¼ ì°¾ì•„ì„œ ê°€ì ¸ì˜´
 	static ConstructorHelpers::FClassFinder<UAnimInstance> NewAnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/Book/BP_WarriorAnim.BP_WarriorAnim_C'"));
 	{
 		GetMesh()->SetAnimInstanceClass(NewAnimInstance.Class);
@@ -51,7 +51,7 @@ void ANewCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !1 ! ! ! ! ! ¹»±î? 
+	// ì…ë ¥ìœ¼ë¡œ ë°›ì€ X,Yê°’(ZëŠ” ìœ„ë¼ì„œ ì œì™¸)ì„ í™•ì¸í•˜ê³  ë§ê²Œ ì´ë™
 	GetController()->SetControlRotation(FRotationMatrix::MakeFromX(DirectionToMove).Rotator());
 	AddMovementInput(DirectionToMove);
 }
@@ -72,9 +72,6 @@ void ANewCharacter::UpDown(float UDValue)
 {
 	//AddMovementInput(GetActorForwardVector(), UDValue);
 	//AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), UDValue);
-
-
-	// ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !1 ! ! ! ! ! ¹»±î? 
 	DirectionToMove.X = UDValue;
 }
 
@@ -100,53 +97,54 @@ void ANewCharacter::SetControlMode(FString ControlMode)
 	if (ControlMode == "GTA")
 	{
 
-		// ±âº»ÀûÀ¸·Î ºÎÂøµÈ ÄÄÆ÷³ÍÆ®´Â »ó´ëÀûÀÎ È¸Àü°ªÀ» °¡Áö´Âµ¥, 0À¸·Î ÃÊ±âÈ­.
+		// ê¸°ë³¸ì ìœ¼ë¡œ ë¶€ì°©ëœ ì»´í¬ë„ŒíŠ¸ëŠ” ìƒëŒ€ì ì¸ íšŒì „ê°’ì„ ê°€ì§€ëŠ”ë°, 0ìœ¼ë¡œ ì´ˆê¸°í™”.
 		SpringArm->SetRelativeRotation(FRotator::ZeroRotator);
 
-		// PawnÀÇ È¸Àü°ªÀ» °ğ¹Ù·Î SpringArm¿¡ »ç¿ë
+		// Pawnì˜ íšŒì „ê°’ì„ ê³§ë°”ë¡œ SpringArmì— ì‚¬ìš©
 		SpringArm->bUsePawnControlRotation = true;
 
-		// SpringArmÀÇ »óÀ§°´Ã¼¿¡ ÀÇÇØ È¸Àü°ªÀÌ ¼³Á¤µÉ°ÍÀÎÁö?
+		// SpringArmì˜ ìƒìœ„ê°ì²´ì— ì˜í•´ íšŒì „ê°’ì´ ì„¤ì •ë ê²ƒì¸ì§€?
 		SpringArm->bInheritPitch = true;
 		SpringArm->bInheritRoll = true;
 		SpringArm->bInheritYaw = true;
 
-		// Pawn°ú Ä«¸Ş¶ó »çÀÌ Àå¾Ö¹°ÀÌ °¨ÁöµÇ¸é ÁÜ ÀÎÇÒÁö?
+		// Pawnê³¼ ì¹´ë©”ë¼ ì‚¬ì´ ì¥ì• ë¬¼ì´ ê°ì§€ë˜ë©´ ì¤Œ ì¸í• ì§€?
 		SpringArm->bDoCollisionTest = true;
 
-		// SpringArm ½ÃÁ¡¿¡ µû¶ó ÄÁÆ®·Ñ·¯ÀÇ RotaionYaw°¡ ¹Ù²ğÁö?
+		// SpringArm ì‹œì ì— ë”°ë¼ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ RotaionYawê°€ ë°”ë€”ì§€?
 		bUseControllerRotationYaw = false;
 
-		// PawnÀÌ ¿òÁ÷ÀÌ´Â ¹æÇâÀ¸·Î Pawn ÀÚµ¿È¸Àü
+		// Pawnì´ ì›€ì§ì´ëŠ” ë°©í–¥ìœ¼ë¡œ Pawn ìë™íšŒì „
 		GetCharacterMovement()->bOrientRotationToMovement = true;
-		// À§ÀÇ È¸Àü¼Óµµ¸¦ ÁöÁ¤
+		// ìœ„ì˜ íšŒì „ì†ë„ë¥¼ ì§€ì •
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 150.0f, 0.0f);
 	}
 	else if (ControlMode == "Diablo")
 	{
-		// ¸Ö¸®¼­ º¸µµ·Ï ¼³Á¤
+		// ë©€ë¦¬ì„œ ë³´ë„ë¡ ì„¤ì •
 		SpringArm->TargetArmLength = 800.0f;
 		
-		// ±âº»ÀûÀ¸·Î ºÎÂøµÈ ÄÄÆ÷³ÍÆ®´Â »ó´ëÀûÀÎ È¸Àü°ªÀ» °¡Áö´Âµ¥, 
-		// ºÎÂøµÈ ÄÄÆ÷³ÍÆ®·ÎºÎÅÍ 45µµ ³»·Áº¸µµ·Ï ¼³Á¤
+		// ê¸°ë³¸ì ìœ¼ë¡œ ë¶€ì°©ëœ ì»´í¬ë„ŒíŠ¸ëŠ” ìƒëŒ€ì ì¸ íšŒì „ê°’ì„ ê°€ì§€ëŠ”ë°, 
+		// ë¶€ì°©ëœ ì»´í¬ë„ŒíŠ¸ë¡œë¶€í„° 45ë„ ë‚´ë ¤ë³´ë„ë¡ ì„¤ì •
 		SpringArm->SetRelativeRotation(FRotator(-45.0f,0.0f,0.0f));
 
-		// PawnÀÇ È¸Àü°ªÀ» SpringArm¿¡ »ç¿ëÇÏÁö ¾ÊÀ½. È¸Àü°ªÀº Ç×»ó °íÁ¤.
+		// Pawnì˜ íšŒì „ê°’ì„ SpringArmì— ì‚¬ìš©í•˜ì§€ ì•ŠìŒ. íšŒì „ê°’ì€ í•­ìƒ ê³ ì •.
 		SpringArm->bUsePawnControlRotation = false;
 
-		// SpringArmÀÇ »óÀ§°´Ã¼¿¡ ÀÇÇØ È¸Àü°ªÀÌ ¼³Á¤µÉ°ÍÀÎÁö? È¸Àü°ªÀº Ç×»ó °íÁ¤.
+		// SpringArmì˜ ìƒìœ„ê°ì²´ì— ì˜í•´ íšŒì „ê°’ì´ ì„¤ì •ë ê²ƒì¸ì§€? íšŒì „ê°’ì€ í•­ìƒ ê³ ì •.
 		SpringArm->bInheritPitch = false;
 		SpringArm->bInheritRoll = false;
 		SpringArm->bInheritYaw = false;
 
-		// Pawn°ú Ä«¸Ş¶ó »çÀÌ Àå¾Ö¹°ÀÌ °¨ÁöµÇ¸é ÁÜ ÀÎÇÒÁö? ¾ÈÇÔ
+		// Pawnê³¼ ì¹´ë©”ë¼ ì‚¬ì´ ì¥ì• ë¬¼ì´ ê°ì§€ë˜ë©´ ì¤Œ ì¸í• ì§€? ì•ˆí•¨
 		SpringArm->bDoCollisionTest = false;
 
-		// Ä«¸Ş¶óÀÇ È¸Àü¿¡ µû¶ó¼­ RotaionYaw°¡ ¹Ù²ğÁö? ÇÔ
-		// PawnÀÇ È¸ÀüÀ» ÀÚÀ¯·Ó°Ô µÑÁö, ±×·¸Áö ¾Ê°í °íÁ¤ÇÒÁö¸¦ ÀÇ¹ÌÇÔ
-		bUseControllerRotationYaw = true;
+		// ì¹´ë©”ë¼ì˜ íšŒì „ì— ë”°ë¼ì„œ RotaionYawê°€ ë°”ë€”ì§€? í•¨
+		// Pawnì˜ íšŒì „ì„ ììœ ë¡­ê²Œ ë‘˜ì§€, ê·¸ë ‡ì§€ ì•Šê³  ê³ ì •í• ì§€ë¥¼ ì˜ë¯¸í•¨ 
+		bUseControllerRotationYaw = false; //í•´ë‹¹ê°’ì„ fasleë¡œ ë‘ê³ , ì•„ë˜ê°’ì„ trueë¡œ ë‘ë©´ 45ë„ ê¸°ì¤€ ì›€ì§ì„ì´ ìì—°ìŠ¤ëŸ½ê²Œ ë°”ë€œ
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 
-		// PawnÀÌ ¿òÁ÷ÀÌ´Â ¹æÇâÀ¸·Î Pawn ÀÚµ¿È¸Àü ¾ÈÇÔ - ±×·¡¼­ ¼Óµµµµ ÇÊ¿ä¾ø´Ù.
+		// Pawnì´ ì›€ì§ì´ëŠ” ë°©í–¥ìœ¼ë¡œ Pawn ìë™íšŒì „ ì•ˆí•¨ - ê·¸ë˜ì„œ ì†ë„ë„ í•„ìš”ì—†ë‹¤.
 		GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	}
