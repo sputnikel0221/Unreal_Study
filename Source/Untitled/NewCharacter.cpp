@@ -37,6 +37,10 @@ ANewCharacter::ANewCharacter()
 	}
 
 	SetControlMode(ControlMode::GTA);
+
+	// InterpTo를 위한 속도값 저장
+	ArmLengthSpeed = 3.0f;
+	ArmRotationSpeed = 10.0f;
 }
 
 // Called when the game starts or when spawned
@@ -51,11 +55,22 @@ void ANewCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//float를 위한 InterpTo 사용
+	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, ArmLength, DeltaTime, ArmLengthSpeed);
+
 	switch (CurrentControlMode)
 	{
 	case ControlMode::DIABLO:// 입력으로 받은 X,Y값(Z는 위라서 제외)을 확인하고 맞게 이동
-		GetController()->SetControlRotation(FRotationMatrix::MakeFromX(DirectionToMove).Rotator());
-		AddMovementInput(DirectionToMove);
+		//GetController()->SetControlRotation(FRotationMatrix::MakeFromX(DirectionToMove).Rotator());
+		//AddMovementInput(DirectionToMove);
+
+		// Rotatoion를 위한 InterpTo 사용
+		FRotator tmp =  FMath::RInterpTo(SpringArm->GetRelativeRotation(), ArmRotation, DeltaTime, ArmRotationSpeed);
+		SpringArm->SetRelativeRotation(tmp);
+
+		// 이동관련
+		GetController()->SetControlRotation(DirectionToMove.ToOrientationRotator());
+		AddMovementInput(DirectionToMove); //이동
 		break;
 	}
 
@@ -132,6 +147,7 @@ void ANewCharacter::Turn(float aValue)
 		switch (CurrentControlMode)
 		{
 		case ControlMode::GTA:
+			ArmLength = 450.0f;
 			// 기본적으로 부착된 컴포넌트는 상대적인 회전값을 가지는데, 0으로 초기화.
 			SpringArm->SetRelativeRotation(FRotator::ZeroRotator);
 
@@ -158,11 +174,15 @@ void ANewCharacter::Turn(float aValue)
 
 		case ControlMode::DIABLO:
 			// 멀리서 보도록 설정
-			SpringArm->TargetArmLength = 800.0f;
+			//SpringArm->TargetArmLength = 800.0f;
 
 			// 기본적으로 부착된 컴포넌트는 상대적인 회전값을 가지는데, 
 			// 부착된 컴포넌트로부터 45도 내려보도록 설정
-			SpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+			//SpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+
+			ArmLength = 800.0f;
+			ArmRotation = FRotator(-45.0f, 0.0f, 0.0f);
+
 
 			// Pawn의 회전값을 SpringArm에 사용하지 않음. 회전값은 항상 고정.
 			SpringArm->bUsePawnControlRotation = false;
@@ -191,9 +211,11 @@ void ANewCharacter::Turn(float aValue)
 		switch (CurrentControlMode)
 		{
 		case ControlMode::GTA:
+			GetController()->SetControlRotation(GetActorRotation());
 			SetControlMode(ControlMode::DIABLO);
 			break;
 		case ControlMode::DIABLO:
+			GetController()->SetControlRotation(SpringArm->GetRelativeRotation());
 			SetControlMode(ControlMode::GTA);
 			break;
 		}

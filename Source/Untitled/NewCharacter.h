@@ -52,4 +52,10 @@ protected:
 	ControlMode CurrentControlMode = ControlMode::GTA; //일단 기본모드로 설정
 
 	void ViewChange();
+
+	// 관련 변수를 추가, 오류를 방지해 항상 초기화를 해놓는 모습
+	float ArmLength = 0.0f;
+	FRotator ArmRotation = FRotator::ZeroRotator;
+	float ArmLengthSpeed = 0.0f;
+	float ArmRotationSpeed = 0.0f;
 };
