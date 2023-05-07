@@ -41,6 +41,9 @@ ANewCharacter::ANewCharacter()
 	// InterpTo를 위한 속도값 저장
 	ArmLengthSpeed = 3.0f;
 	ArmRotationSpeed = 10.0f;
+
+	// Character Movement의 Jump수치를 바꿈
+	GetCharacterMovement()->JumpZVelocity = 800.0f;
 }
 
 // Called when the game starts or when spawned
@@ -89,6 +92,8 @@ void ANewCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	// 액션을 Bind
 	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &ANewCharacter::ViewChange);
+
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 }
 
 void ANewCharacter::UpDown(float UDValue)
