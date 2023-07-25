@@ -5,11 +5,22 @@
 	"Description": "",
 	"Modules": [
 		{
+			"Name": "UntitledSub",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"AdditionalDependencies": [
+				"CoreUObject"
+			]
+		},
+		{
 			"Name": "Untitled",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine"
+				"Engine",
+				"UMG",
+				"AIModule",
+				"UntitledSub"
 			]
 		}
 	],

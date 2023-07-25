@@ -10,6 +10,6 @@ public class UntitledEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
-		ExtraModuleNames.Add("Untitled");
-	}
+        ExtraModuleNames.AddRange(new string[] { "Untitled", "UntitledSub" });
+    }
 }
